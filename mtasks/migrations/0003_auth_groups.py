@@ -51,10 +51,6 @@ def _remove_group_permissions(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-    """
-    Add basic groups "Task Admin" and "Task Editor" for users.
-    """
-
     dependencies = [
         ('mtasks', '0002_alter_task_options'),
     ]

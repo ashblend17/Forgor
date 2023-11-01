@@ -30,7 +30,7 @@ class TaskAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'last_modified', 'created_by')
     autocomplete_fields = ['user']
 
-    fieldsets = (               # Edition form
+    fieldsets = (               
         (None,                   {'fields': ('title', ('user'), 'deadline',
                                              ('state', 'priority'), ('description', 'resolution'))}),
         (_('More...'), {'fields': (('created_at', 'last_modified'), 'created_by'), 'classes': ('collapse',)}),
