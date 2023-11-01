@@ -29,5 +29,3 @@ def test_validate_title(task1: Task):
     task2.title = 'The title'
     with pytest.raises(ValidationError):
         task2.clean()
-
-
