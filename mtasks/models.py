@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
-from coleman.utils.mail import send_mail_async as send_mail
+from forgor_adm.utils.mail import send_mail_async as send_mail
 from hashlib import sha1
 
 
@@ -133,23 +133,11 @@ class Task(models.Model):
                                self.number, e.__class__.__name__, str(e))
 
     def get_tasks_viewer_url(self):
-        """
-        Verification token added to the Tasks Viewer URL so each one
-        sent through email cannot be used to change the order number and
-        access to other orders.
-
-        It uses as input a salt code configured and the ID number.
-
-        See: coleman/settings_emails.py
-             https://github.com/mrsarm/tornado-dcoleman-mtasks-viewer
-        """
         salt = settings.TASKS_VIEWER_HASH_SALT
         if not settings.DEBUG and salt == '1two3':
             logger.warning("Insecure salt code used to send email orders, do NOT use it in PRODUCTION")
-        # created_at_as_iso = self.created_at.strftime("%Y-%m-%dT%H:%M:%S.%fZ") # This ISO format is the same used
-                                                                                # used by the REST serializer
-        token = "{}-{}".format(salt, self.pk)                                   # SHA-1 is enough secure for
-        token = sha1(token.encode('utf-8')).hexdigest()                         # this purpose (SHA-2 is too long)
+        token = "{}-{}".format(salt, self.pk)
+        token = sha1(token.encode('utf-8')).hexdigest()
         return settings.TASKS_VIEWER_ENDPOINT.format(number=self.number, token=token)
 
 

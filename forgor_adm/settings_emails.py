@@ -21,8 +21,8 @@ EMAIL_BACKEND = env('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBacken
 TASKS_SEND_EMAILS_TO_ASSIGNED = env.bool('TASKS_SEND_EMAILS_TO_ASSIGNED', False)
 
 
-# Enables the Tornado Django Coleman Viewer (it will send emails with the order URL)
-# Check: https://github.com/mrsarm/tornado-dcoleman-mtasks-viewer
+# Enables the Tornado Django forgor_adm Viewer (it will send emails with the order URL)
+# Check: https://github.com/mrsarm/tornado-dforgor_adm-mtasks-viewer
 TASKS_VIEWER_ENABLED = env.bool('TASKS_VIEWER_ENABLED', False)
 TASKS_VIEWER_HASH_SALT = env('TASKS_VIEWER_HASH_SALT', '1two3')   # REPLACE in production !!!
 TASKS_VIEWER_ENDPOINT = env('TASKS_VIEWER_ENDPOINT', 'http://localhost:8888/{number}?t={token}')
