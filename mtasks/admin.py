@@ -14,11 +14,11 @@ class ItemInline(admin.TabularInline):
 
 @admin.register(Task)
 class TaskAdmin(admin.ModelAdmin):
-    list_display = ('number', 'title', 'user', 'partner', 'created_at', 'deadline', 'priority', 'state')
+    list_display = ('number', 'title', 'user', 'created_at', 'deadline', 'priority', 'state')
     list_display_links = ('number', 'title')
     search_fields = ('id', 'title', 'item__item_description',
-                     'user__username', 'user__first_name', 'user__last_name',
-                     'partner__name', 'partner__email')
+                     'user__username', 'user__first_name', 'user__last_name',)
+    
     list_filter = (
         ('user', RelatedDropdownFilter),
         # ('partner', RelatedDropdownFilter),
@@ -28,10 +28,10 @@ class TaskAdmin(admin.ModelAdmin):
     )
     ordering = TASK_PRIORITY_FIELDS
     readonly_fields = ('created_at', 'last_modified', 'created_by')
-    autocomplete_fields = ['user', 'partner']
+    autocomplete_fields = ['user']
 
     fieldsets = (               # Edition form
-        (None,                   {'fields': ('title', ('user', 'partner'), 'deadline',
+        (None,                   {'fields': ('title', ('user'), 'deadline',
                                              ('state', 'priority'), ('description', 'resolution'))}),
         (_('More...'), {'fields': (('created_at', 'last_modified'), 'created_by'), 'classes': ('collapse',)}),
     )
@@ -47,7 +47,7 @@ class TaskAdmin(admin.ModelAdmin):
         fieldsets = super().get_fieldsets(request, obj)
         if obj is None:
             fieldsets = (      # Creation form
-                (None, {'fields': ('title', ('user', 'partner'), 'deadline', ('state', 'priority'), 'description')}),
+                (None, {'fields': ('title', ('user'), 'deadline', ('state', 'priority'), 'description')}),
             )
         return fieldsets
 

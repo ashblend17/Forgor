@@ -5,7 +5,6 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
-from partner.models import Partner
 from coleman.utils.mail import send_mail_async as send_mail
 from hashlib import sha1
 
@@ -76,7 +75,6 @@ class Task(models.Model):
     )
 
     title = models.CharField(_("title"), max_length=200)
-    partner = models.ForeignKey(Partner, blank=True, null=True, on_delete=models.PROTECT)
     description = models.TextField(_("description"), max_length=2000, null=True, blank=True)
     resolution = models.TextField(_("resolution"), max_length=2000, null=True, blank=True)
     deadline = models.DateField(_("deadline"), null=True, blank=True)
@@ -98,46 +96,15 @@ class Task(models.Model):
     def number(self) -> str:
         return "{:08d}".format(self.pk)
 
-    def save(self, *args, **kwargs):
-        send_email = self.pk is None
-        if not send_email and self.partner:
-            old_task_data = Task.objects.get(pk=self.pk)
-            if old_task_data.partner != self.partner:
-                send_email = True
-        super().save(*args, **kwargs)
-        if send_email:
-            # Emails are sent if the order is new
-            # or the partner has changed
-            self.send_new_task_email()
+    
 
-    def clean(self):
-        validation_errors = {}
-        title = self.title.strip() if self.title else self.title
-        if self.partner:
-            if Task.objects \
-                    .others(self.pk, title=title, partner=self.partner) \
-                    .exclude(state__in=(State.DONE.value, State.DISMISSED.value)) \
-                    .exists():
-                validation_errors['title'] = _('Open task with this title and partner already exists.')
-        else:
-            if Task.objects \
-                    .others(self.pk, title=title, partner=None) \
-                    .exclude(state__in=(State.DONE.value, State.DISMISSED.value)) \
-                    .exists():
-                validation_errors['title'] = _('Open task with this title and no partner already exists.')
-
-        # Add more validations HERE
-
-        if len(validation_errors):
-            raise ValidationError(validation_errors)
+    
 
     def send_new_task_email(self):
         """
         Override with a custom email
         """
         emails_to = []
-        if settings.TASKS_SEND_EMAILS_TO_PARTNERS and self.partner and self.partner.email:
-            emails_to.append(self.partner.email)
         if settings.TASKS_SEND_EMAILS_TO_ASSIGNED and self.user and self.user.email:
             emails_to.append(self.user.email)
         if len(emails_to):

@@ -15,10 +15,6 @@ public_group_permissions = {
       "change_item",
       "delete_item",
       "view_item",
-      "add_partner",
-      "change_partner",
-      "delete_partner",
-      "view_partner",
       "view_user",
   ],
   "Task Editor": [
@@ -30,10 +26,6 @@ public_group_permissions = {
       "change_item",
       "delete_item",
       "view_item",
-      "add_partner",
-      "change_partner",
-      # "delete_partner",
-      "view_partner",
       "view_user",
   ],
 }

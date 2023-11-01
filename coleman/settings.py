@@ -26,7 +26,6 @@ ALLOWED_HOSTS = [ '*' ]
 
 INSTALLED_APPS = [
     'mtasks.apps.MtasksConfig',
-    'partner.apps.PartnerConfig',
     'django_admin_listfilter_dropdown',
     'adminfilters',
     'django.contrib.admin',
@@ -36,6 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'customadmin',
 ]
 
 REST_ENABLED = env.bool('REST_ENABLED', False)

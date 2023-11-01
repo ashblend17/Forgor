@@ -19,7 +19,6 @@ EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD', 'PASS')
 EMAIL_BACKEND = env('EMAIL_BACKEND', 'django.core.mail.backends.smtp.EmailBackend')
 
 TASKS_SEND_EMAILS_TO_ASSIGNED = env.bool('TASKS_SEND_EMAILS_TO_ASSIGNED', False)
-TASKS_SEND_EMAILS_TO_PARTNERS = env.bool('TASKS_SEND_EMAILS_TO_PARTNERS', False)
 
 
 # Enables the Tornado Django Coleman Viewer (it will send emails with the order URL)
