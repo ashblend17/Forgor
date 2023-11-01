@@ -1,6 +1,6 @@
 import enum
 import logging
-
+from django.core.mail import *
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -13,15 +13,10 @@ logger = logging.getLogger(__name__)
 
 number_tr = _("number")
 
-# Fields used to create an index in the DB and sort the tasks in the Admin
 TASK_PRIORITY_FIELDS = ('state', '-priority', '-deadline')
 
 
 class State(enum.Enum):
-    """
-    Status of completion of the task
-    (codes are prefixed with numbers to be easily sorted in the DB).
-    """
     TO_DO = '00-to-do'
     IN_PROGRESS = '10-in-progress'
     BLOCKED = '20-blocked'
@@ -30,10 +25,7 @@ class State(enum.Enum):
 
 
 class Priority(enum.Enum):
-    """
-    The priority of the task
-    (codes are prefixed with numbers to be easily sorted in the DB).
-    """
+    
     LOW = '00-low'
     NORMAL = '10-normal'
     HIGH = '20-high'
@@ -43,11 +35,6 @@ class Priority(enum.Enum):
 class TaskManager(models.Manager):
 
     def others(self, pk, **kwargs):
-        """
-        Return queryset with all objects
-        excluding the one with the "pk" passed, but
-        applying the filters passed in "kwargs".
-        """
         return self.exclude(pk=pk).filter(**kwargs)
 
 
@@ -101,9 +88,6 @@ class Task(models.Model):
     
 
     def send_new_task_email(self):
-        """
-        Override with a custom email
-        """
         emails_to = []
         if settings.TASKS_SEND_EMAILS_TO_ASSIGNED and self.user and self.user.email:
             emails_to.append(self.user.email)

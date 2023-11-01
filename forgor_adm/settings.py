@@ -20,7 +20,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
-    'customadmin',
 ]
 
 REST_ENABLED = env.bool('REST_ENABLED', False)
