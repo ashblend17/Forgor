@@ -1,8 +1,3 @@
-#
-# Settings used by pytest
-#
-
-# Import all general settings
 
 from .settings import *
 from . import env

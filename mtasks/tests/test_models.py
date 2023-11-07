@@ -3,7 +3,6 @@ import pytest
 from django.core.exceptions import ValidationError
 
 from mtasks.models import Task, State, Priority
-from partner.models import Partner
 
 
 pytestmark = pytest.mark.django_db(transaction=True)
@@ -30,16 +29,3 @@ def test_validate_title(task1: Task):
     task2.title = 'The title'
     with pytest.raises(ValidationError):
         task2.clean()
-
-
-def test_validate_title_and_partner(task1: Task):
-    # Create a second task with the same task fails
-    partner = Partner(name='Acme SA')
-    partner.save()
-    task1.partner = partner
-    task1.save()
-    task2 = Task(title='The title')
-    task2.clean()   # No exception despite having the same title
-    task2.partner = partner
-    with pytest.raises(ValidationError):
-        task2.clean()   # With the same partner and title does fail

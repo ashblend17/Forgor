@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers, viewsets
-from partner.serializers import PartnerSerializer
 from .models import Task
 
 
@@ -15,7 +14,6 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class TaskSerializer(serializers.HyperlinkedModelSerializer):
-    partner = PartnerSerializer(read_only=True)
     user = UserSerializer(read_only=True)
 
     class Meta:
@@ -23,7 +21,6 @@ class TaskSerializer(serializers.HyperlinkedModelSerializer):
         fields = (
             'number',
             'title',
-            'partner',
             'user',
             'description',
             'resolution',
