@@ -27,6 +27,7 @@ class State(enum.Enum):
 class Priority(enum.Enum):
     
     LOW = '00-low'
+    #lol
     NORMAL = '10-normal'
     HIGH = '20-high'
     CRITICAL = '30-critical'
